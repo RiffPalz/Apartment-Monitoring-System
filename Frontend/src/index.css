@@ -1,0 +1,16 @@
+@font-face {
+ font-family: RegularMilk;
+ src:url("../src/assets/Fonts/LEMONMILK-Regular.otf");
+}
+
+@font-face {
+  font-family: LightMilk;
+  src: url("../src/assets/Fonts/LEMONMILK-Light.otf");
+}
+
+@import "tailwindcss";
+
+@theme{
+  --font-RegularMilk: RegularMilk;
+  --font-LightMilk: LightMilk;
+}
