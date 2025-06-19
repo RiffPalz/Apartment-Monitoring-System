@@ -41,7 +41,6 @@ const CreateAcc = () => {
       setFormData((prev) => ({ ...prev, [name]: value }));
     }
   };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     const { fullName, emailAdd, phoneNumber, unitNumber, numberOfTenants, agreed } = formData;
@@ -51,23 +50,10 @@ const CreateAcc = () => {
       return;
     }
 
-    try {
-      await axios.post("http://localhost:5000/api/users/create", {
-        fullName,
-        emailAdd,
-        phoneNumber,
-        unitNumber,
-        numberOfTenants,
-        agreed
-      });
-      alert("Account created successfully!");
-      navigate("/SignUp", {
-        state: { fullName, emailAdd, phoneNumber, unitNumber, numberOfTenants }
-      });
-    } catch (error) {
-      console.error("Error creating account:", error);
-      alert("Failed to create account. Please try again later.");
-    }
+    // Store form data and move to SignUp page without creating account yet
+    navigate("/SignUp", {
+      state: { fullName, emailAdd, phoneNumber, unitNumber, numberOfTenants }
+    });
   };
 
   return (

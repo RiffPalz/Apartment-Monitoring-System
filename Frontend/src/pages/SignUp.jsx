@@ -12,12 +12,14 @@ const SignUp = () => {
   const location = useLocation();
   const userData = location.state || {}; // Retrieve data from CreateAcc
 
+  // Debug the received userData
+  console.log("Received userData in SignUp:", userData);
+
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-
   const handleSignUp = async (e) => {
     e.preventDefault();
 
@@ -25,18 +27,36 @@ const SignUp = () => {
       if (password !== confirmPassword) {
         alert("Passwords do not match!");
         return;
+      }      
+      
+      // Check if all required fields exist in userData
+      const { fullName, emailAdd, phoneNumber, unitNumber, numberOfTenants } = userData;
+      
+      if (!fullName || !emailAdd || !phoneNumber || !unitNumber || !numberOfTenants) {
+        alert("Missing required user information. Please go back to the previous step.");
+        return;
       }
-
-      try {
-        console.log = await axios.post("http://localhost:5000/api/users/create", {
-          ...userData,
+        try {
+        // Create a request object with all required fields and log it for debugging
+        const requestData = {
+          fullName,
+          emailAdd,
           username,
           password,
-        });
-
+          phoneNumber,
+          unitNumber: parseInt(unitNumber), // Convert to number as expected by backend
+          numberOfTenants: parseInt(numberOfTenants), // Convert to number as expected by backend
+        };
+        
+        console.log("Sending data:", requestData);
+        
+        const response = await axios.post("http://localhost:5000/api/users/create", requestData);
+        
+        console.log("Signup response:", response);
         alert("Account created successfully!");
         navigate("/"); // Redirect to login
       } catch (err) {
+        console.error("Signup error:", err);
         alert(err.response?.data?.message || "Signup failed");
       }
     } else {
